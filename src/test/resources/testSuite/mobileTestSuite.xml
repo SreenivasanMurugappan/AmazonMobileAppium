@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Test Suite">
+ 
+	<!-- Should either be Android or IOS -->
+	<parameter name="platformName" value="Android" />
+	<parameter name="platformVersion" value="11.0" />
+	<parameter name="deviceName" value="emulator-5554" />
+	<parameter name="appName" value="amazon" />
+	
+	<test name="LoginTest">
+		<classes>
+			<class name="com.mobile.test.LoginTest" />
+		</classes>
+	</test>
+	
+	<test name="PurchaseTest">
+		<classes>
+			<class name="com.mobile.test.PurchaseTest" />
+		</classes>
+	</test>
+
+</suite> <!-- Suite -->
