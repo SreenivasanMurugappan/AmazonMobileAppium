@@ -10,13 +10,20 @@ import org.openqa.selenium.WebDriver;
 
 import io.appium.java_client.AppiumDriver;
 
+/**
+ * Screenshot for success and failures
+ * 
+ */
 public class ScreenShot {
 
 	static boolean logWebElements = false;
 	public static Properties miscProps = new Properties();
-	private WebDriver driver;
-
-	public static void getScreenshot(AppiumDriver driver, String outputlocation) throws IOException {
+	/**
+	 * getScreenshot - Screenshot of the application
+	 * @param driver - Appium Driver
+	 * @param outputlocation - Output of the file
+	 */
+	public static void getScreenshot(final AppiumDriver driver, String outputlocation) throws IOException {
 		System.out.println("Capturing the snapshot of the page ");
 		String name = System.getProperty("user.dir") + "\\screenShots\\" + outputlocation + ".png";
 		System.out.println(name);

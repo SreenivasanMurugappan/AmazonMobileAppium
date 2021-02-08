@@ -1,5 +1,10 @@
 package com.mobile.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -23,10 +28,26 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidTouchAction;
 import io.appium.java_client.touch.offset.ElementOption;
 
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+/**
+ * ReuseMethods to define frequently used actions in an application.
+ * 
+ */
 public class ReuseMethods extends BaseTest {
 	
-	// Scroll to Xpath
-	public static void scrolltoXPath(WebDriver driver, String xPath) {
+	/**
+	 * scrolltoXPath - Scroll to element function
+	 * @param driver - Appium Driver
+	 * @param xPath - xpath of locators/elements
+	 */
+	public static void scrolltoXPath(final AppiumDriver driver, String xPath) {
 
 		do {
 			try {
@@ -44,7 +65,11 @@ public class ReuseMethods extends BaseTest {
 		} while (true);
 	}
 
-	// Selecting an element using tap function
+	/**
+	 * tapElement - Tap element using TouchAction
+	 * @param driver - Appium Driver
+	 * @param xpathIdentifier - xpath of locators/elements
+	 */
 	public void tapElement(final AppiumDriver driver, String xpathIdentifier) throws InterruptedException {
 		final WebElement ele = driver.findElement(By.xpath(xpathIdentifier));
 		System.out.println("Lable name of the element : " + ele.getText());
@@ -53,11 +78,12 @@ public class ReuseMethods extends BaseTest {
 		int y = loc.getY();
 		AndroidTouchAction touch = new AndroidTouchAction(driver);
 		touch.tap(ElementOption.element(ele, x, y)).perform();
-		//Press
-		Thread.sleep(1000);
 	}
 
-	// Search Context
+	/**
+	 * findContexts - Find webviews
+	 * @param driver - Appium Driver
+	 */
 	public void findContexts(final AppiumDriver driver) {
 		Set<String> availableContexts = driver.getContextHandles();
 		System.out.println("Total No of Context Found After we reach to WebView = "+ availableContexts.size());
@@ -65,13 +91,34 @@ public class ReuseMethods extends BaseTest {
 			System.out.println(context);
 			if(context.contains("Web View")){
 				System.out.println("Context Name is " + context);
-				// 4.3 Call context() method with the id of the context you want to access and change it to WEBVIEW_1
-				//(This puts Appium session into a mode where all commands are interpreted as being intended for automating the web view)
 				driver.context(context);
 				break;
 			}
 		}
 	}
 	
-	
+	/**
+	 * testData - From excel sheet reader
+	 * @param excelFileLocation - File location
+	 * @param sheetName - Excel sheet name
+	 */
+	public static Object[][] testData(String excelFileLocation, String sheetName) throws Exception
+	    {
+		 FileInputStream file= new FileInputStream(excelFileLocation);
+         XSSFWorkbook workbook = new XSSFWorkbook(file);
+         XSSFSheet sheet = workbook.getSheet(sheetName);
+         int rowCount = sheet.getLastRowNum();
+         int columnCount = sheet.getRow(0).getLastCellNum();
+         Object[][] data = new Object[rowCount][columnCount];
+         for (int i = 1; i <= rowCount; i++) {
+             XSSFRow row = sheet.getRow(i);
+             for (int j = 0; j < columnCount; j++) {
+                 XSSFCell cell = row.getCell(j);
+                 DataFormatter formatter = new DataFormatter();
+                 String val = formatter.formatCellValue(cell);
+                 data[i - 1][j] = val;
+             }
+         }
+         return data;
+     }
 }

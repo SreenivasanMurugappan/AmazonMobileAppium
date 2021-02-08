@@ -1,52 +1,21 @@
 package com.mobile.pageobject;
 
-import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Reporter;
-
 import com.mobile.utils.ReuseMethods;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileDriver;
-import io.appium.java_client.MobileElement;
-import io.appium.java_client.TouchAction;
-import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.AndroidKeyCode;
-import io.appium.java_client.android.AndroidKeyMetastate;
 import io.appium.java_client.pagefactory.AndroidBy;
-import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import io.appium.java_client.pagefactory.iOSFindBy;
-import org.openqa.selenium.support.FindBy;
 
-import java.util.concurrent.TimeUnit;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Reporter;
-
-
-
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileDriver;
-import io.appium.java_client.TouchAction;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import io.appium.java_client.pagefactory.iOSFindBy;
-
-
-public class PurchasePage extends ObjectPage {
+/**
+ * Purchase page variables, elements and methods page
+ */
+public class PurchasePage extends CommonPage {
 	
   public static final long  IMPLICITLY_WAIT_TIMEOUT = 10;
   
@@ -78,13 +47,21 @@ public class PurchasePage extends ObjectPage {
   @AndroidBy(xpath = A_ScrollToObject)
   public WebElement ScrollToObject;
   
-  public PurchasePage(final WebDriver driver, final String platform) {
+  /**
+   * PurchasePage constructor
+   * @param driver - Appium Driver
+   * @param platform - Android or iOS
+   */  
+  public PurchasePage(final AppiumDriver driver, final String platform) {
     super(driver, platform);
     // TODO Auto-generated constructor stub
     PageFactory.initElements(new AppiumFieldDecorator(driver), this);
   }
 
-  // Add to Cart
+  /**
+   * addToCart - this function is to add the product in the cart
+   * @param driver - Appium Driver
+   */
   public void addToCart(final AppiumDriver driver) throws InterruptedException {
     final WebDriverWait ww = new WebDriverWait(driver, 120);
     ww.until(ExpectedConditions.elementToBeClickable(By.id(A_SkipSigninBtn)));
@@ -94,8 +71,6 @@ public class PurchasePage extends ObjectPage {
     ReuseMethods reuse = new ReuseMethods();
     reuse.scrolltoXPath(driver, A_ScrollToObject);
     reuse.tapElement(driver, A_ScrollToObject);
-   
-    //List the number of contexts (WebView)
     reuse.findContexts(driver);
-}
+    }
 }

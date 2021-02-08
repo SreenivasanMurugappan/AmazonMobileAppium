@@ -13,22 +13,19 @@ import com.mobile.pageobject.PurchasePage;
 import com.mobile.utils.ScreenShot;
 
 /**
- * @description Add product in cart
- * @author Sreenivasan M
- * @creationDate 31-01-2021
- * @modificationDdate 31-01-2021
+ * Purchase Test
  */
 
 public class PurchaseTest extends BaseTest {
-
+	
+	
+ /**
+  * purchase_Verification 
+  */
   @Test
-  @Parameters({ "appName", "platformName", "platformVersion", "deviceName"})
-  public void purchase_Verification(final String appName, final String platformName, final String platformVersion, 
-		  final String deviceName){
+  public void purchase_Verification(){
     try {
       final PurchasePage purchase = new PurchasePage(driver, platform);
-      
-      // Add to cart
       purchase.addToCart(driver);
       LOGGER.info("Add products to cart");
       Reporter.log("Add products to cart");
@@ -39,7 +36,6 @@ public class PurchaseTest extends BaseTest {
 		try {
 			ScreenShot.getScreenshot(driver, "FAILURE_" + this.getClass().getName());
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		e.printStackTrace();

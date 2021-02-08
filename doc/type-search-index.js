@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"com.mobile.common","l":"BaseTest"},{"p":"com.mobile.pageobject","l":"CommonPage"},{"p":"com.mobile.pageobject","l":"LoginPage"},{"p":"com.mobile.test","l":"LoginTest"},{"p":"com.mobile.pageobject","l":"PurchasePage"},{"p":"com.mobile.utils","l":"ReuseMethods"},{"p":"com.mobile.utils","l":"ScreenShot"}]

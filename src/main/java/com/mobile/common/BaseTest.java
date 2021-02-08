@@ -2,6 +2,7 @@ package com.mobile.common;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -13,8 +14,8 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 
-/*
- * Author Sreenivas
+/**
+ * BaseTest for driver initialization
  */
 public class BaseTest {
 	public final static Logger LOGGER =  
@@ -24,7 +25,19 @@ public class BaseTest {
 	protected String           platform;
 	public final static String    ANDROID_PLATFORM  = "Android";
 	public final static String    IOS_PLATFORM      = "IOS";
-
+	
+	
+	public static ResourceBundle propReader = ResourceBundle.getBundle("environmentInfo.TestConfig");
+	private static final String appPackage   = propReader.getString("appPackage");
+	private static final String appActivity   = propReader.getString("appActivity");
+	
+	/**
+	 * setUp - Driver initization
+	 * @param appName - Application Name
+	 * @param platformName - Android or iOS
+	 * @param platformVersion - Version number
+	 * @param deviceName - Emulator or Simulator name
+	 */
 	@BeforeMethod
 	@Parameters({ "appName", "platformName", "platformVersion", "deviceName"})
 	public void setUp(final String appName, final String platformName, final String platformVersion, 
@@ -45,8 +58,8 @@ public class BaseTest {
 			throwMissingPlatformException();
 		} else if (platformName.equals(ANDROID_PLATFORM)) {
 			if (appName.contentEquals("amazon")) {
-				capabilities.setCapability("appPackage", "com.amazon.mShop.android.shopping");
-				capabilities.setCapability("appActivity","com.amazon.mShop.home.HomeActivity");
+				capabilities.setCapability("appPackage", appPackage);
+				capabilities.setCapability("appActivity",appActivity);
 			} else  {
 				capabilities.setCapability("browserName", "Chrome");
 				capabilities.setCapability("setWebContentsDebuggingEnabled", true);
@@ -67,6 +80,10 @@ public class BaseTest {
 		driver.manage().timeouts().implicitlyWait(10000, TimeUnit.MILLISECONDS);
 	}
 
+	/**
+	 * getSeleniumUrl - Appium Url
+	 * @return Url - SeleniumUrl
+	 */
 	public static URL getSeleniumUrl() throws MalformedURLException {
 		String url = null;
 		url = "http://0.0.0.0:4723/wd/hub";
@@ -74,6 +91,11 @@ public class BaseTest {
 		return new URL(url);
 	}
 
+	/**
+	 * buildAppPath - Applicaton path apk or app file location
+	 * @param appName - Application Name
+	 * @param platformName - Android or iOS
+	 */
 	protected static String buildAppPath(final String appName,
 			final String platformName) {
 		String appPath = null;
@@ -88,17 +110,26 @@ public class BaseTest {
 		return appPath;
 	}
 
+	/**
+	 * throwMissingPlatformException - Throw exception if platform is missing
+	 */
 	private static void throwMissingPlatformException() {
 		throw new RuntimeException(
 				"Platform parameter must be passed, and must equal " + ANDROID_PLATFORM
 				+ " or " + IOS_PLATFORM + " and is case sensitive.");
 	}
-
+	
+	/**
+	 * tearDown - closing the driver
+	 */
 	@AfterMethod(alwaysRun = true)
 	public void tearDown() {
 		quitDriver(driver);
 	}
 
+	/**
+	 * quitDriver - Driver quit
+	 */
 	protected static void quitDriver(AppiumDriver driver) {
 		try {
 			if (driver != null) {
